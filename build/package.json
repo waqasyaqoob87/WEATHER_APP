@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node src/app.js",
     "build": "npm install && npm run zip",
-    "zip": "if not exist build mkdir build && xcopy /E /I /Y /Exclude:build build . && zip -r build\\web-server.zip build\\"
+    "zip": "mkdir -p build && cp -r * build/ && zip -r build/web-server.zip build/"
   },
   "keywords": [],
   "author": "",
