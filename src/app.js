@@ -26,8 +26,8 @@ app.use(express.static(publicDirectoryPath))
 
 app.get('', (req,res)=>{
     res.render('index', {
-        title:'Angular Weather App',
-        name: 'Waqas'
+        title:'NODEJS Weather App',
+        name: 'Waqas Yaqoob'
     })
 })
 
