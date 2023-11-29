@@ -32,7 +32,7 @@ pipeline {
 
                     // Check if dist folder exists before copying
                     def distPath = "${WORKSPACE}\\${distFolder}"
-                    if (dirExists(distPath)) {
+                    if (new File(distPath).isDirectory()) {
                         echo "Dist folder exists. Copying to XAMPP."
                         bat "xcopy /s /y ${distPath} ${xamppHtdocs}\\"
                     } else {
