@@ -3,6 +3,7 @@ pipeline {
 
     environment {
         GITHUB_CREDENTIALS = credentials('multi-branch-pipeline')
+        BUILD_FOLDER = 'build'
     }
 
     stages {
@@ -10,7 +11,7 @@ pipeline {
             steps {
                 script {
                     checkout([$class: 'GitSCM',
-                              branches: [[name: '*/main']], // or your preferred branch
+                              branches: [[name: '*/main']],
                               doGenerateSubmoduleConfigurations: false,
                               extensions: [[$class: 'CloneOption', noTags: false, shallow: true, depth: 1, reference: '', referenceRepository: '', submoduleCfg: [], timeout: 120]],
                               submoduleCfg: [],
@@ -38,13 +39,12 @@ pipeline {
         stage('Copy to XAMPP') {
             steps {
                 script {
-                   def xamppHtdocs = 'C:\\xampp\\htdocs'
-                    def sourceFolder = "${env.WORKSPACE}\\${DIST_FOLDER}"
+                    def xamppHtdocs = 'C:\\xampp\\htdocs'
+                    def sourceFolder = "${env.WORKSPACE}\\${BUILD_FOLDER}"
 
                     echo "Copying files from ${sourceFolder} to ${xamppHtdocs}\\"
 
                     bat "xcopy /s /y \"${sourceFolder}\" \"${xamppHtdocs}\\\""
-
                 }
             }
         }
