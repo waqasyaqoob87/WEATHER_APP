@@ -39,7 +39,7 @@ pipeline {
         stage('Copy to XAMPP') {
             steps {
                 script {
-                    def xamppHtdocs = 'C:\\xampp\\htdocs'
+                    def xamppHtdocs = 'C:\xampp\htdocs\Nasb'
                     def sourceFolder = "${env.WORKSPACE}\\${BUILD_FOLDER}"
 
                     echo "Copying files from ${sourceFolder} to ${xamppHtdocs}\\"
