@@ -1,11 +1,24 @@
 pipeline {
     agent any
+
+    environment {
+        GITHUB_CREDENTIALS = credentials('multi-branch-pipeline')
+    }
+
     stages {
         stage('Checkout') {
             steps {
-                checkout scm
+                script {
+                    checkout([$class: 'GitSCM',
+                              branches: [[name: '*/main']], // or your preferred branch
+                              doGenerateSubmoduleConfigurations: false,
+                              extensions: [[$class: 'CloneOption', noTags: false, shallow: true, depth: 1, reference: '', referenceRepository: '', submoduleCfg: [], timeout: 120]],
+                              submoduleCfg: [],
+                              userRemoteConfigs: [[credentialsId: 'multi-branch-pipeline', url: 'https://github.com/waqasyaqoob87/WEATHER_APP.git']]])
+                }
             }
         }
+
         stage('Install Dependencies') {
             steps {
                 script {
@@ -13,6 +26,7 @@ pipeline {
                 }
             }
         }
+
         stage('Build') {
             steps {
                 script {
@@ -20,16 +34,18 @@ pipeline {
                 }
             }
         }
+
         stage('Copy to XAMPP') {
             steps {
                 script {
                     def xamppHtdocs = 'C:\\xampp\\htdocs'
-                    def distFolder = 'dist'
+                    def distFolder = 'dist' // adjust this if your build output folder is different
                     bat "xcopy /s /y ${distFolder} ${xamppHtdocs}\\"
                 }
             }
         }
     }
+
     post {
         success {
             echo 'Build and deployment successful!'
