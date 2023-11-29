@@ -38,9 +38,13 @@ pipeline {
         stage('Copy to XAMPP') {
             steps {
                 script {
-                    def xamppHtdocs = 'C:\\xampp\\htdocs'
-                    def distFolder = 'dist' // adjust this if your build output folder is different
-                    bat "xcopy /s /y ${distFolder} ${xamppHtdocs}\\"
+                   def xamppHtdocs = 'C:\\xampp\\htdocs'
+                    def sourceFolder = "${env.WORKSPACE}\\${DIST_FOLDER}"
+
+                    echo "Copying files from ${sourceFolder} to ${xamppHtdocs}\\"
+
+                    bat "xcopy /s /y \"${sourceFolder}\" \"${xamppHtdocs}\\\""
+
                 }
             }
         }
